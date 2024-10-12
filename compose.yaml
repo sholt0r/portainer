@@ -1,0 +1,23 @@
+networks:
+  traefik:
+    name: traefik
+    external: true
+
+services:
+  portainer:
+    container_name: portainer
+    restart: unless-stopped
+    image: portainer/portainer-ce:latest
+    networks:
+      - traefik
+    expose:
+      - 9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/data
+    labels:
+      traefik.enable: true
+      traefik.http.routers.portainer.tls: true
+      traefik.http.routers.portainer.tls.certresolver: production
+      traefik.http.routers.portainer.service: portainer
+      traefik.http.services.portainer.loadbalancer.server.port: 9000
