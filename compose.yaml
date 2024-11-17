@@ -21,4 +21,5 @@ services:
         traefik.http.routers.portainer.tls: "true"
         traefik.http.routers.portainer.tls.certresolver: production
         traefik.http.routers.portainer.service: portainer
+        traefik.http.routers.portainer.rule: Host(`portainer.c.ds.kobu.au`)
         traefik.http.services.portainer.loadbalancer.server.port: 9000
