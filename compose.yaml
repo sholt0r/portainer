@@ -9,7 +9,7 @@ volumes:
     driver_opts:
       type: nfs
       o: addr=nas.i.kobu.au,rw
-      device: ":/volume1/ds"
+      device: ":/volume1/ds/portainer"
 
 services:
   portainer:
@@ -22,7 +22,7 @@ services:
     volumes:
       - type: volume
         source: nfs
-        target: /portainer/app
+        target: /app
         volume:
           nocopy: true
     deploy:
