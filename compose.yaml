@@ -3,6 +3,14 @@ networks:
     name: traefik
     external: true
 
+volumes:
+  nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=nas.i.kobu.au,rw
+      device: ":/volume1/ds"
+
 services:
   portainer:
     container_name: portainer
@@ -12,7 +20,11 @@ services:
     expose:
       - 9000
     volumes:
-      - ./data:/data
+      - type: volume
+        source: nfs
+        target: /portainer/app
+        volume:
+          nocopy: true
     deploy:
       restart_policy:
         condition: on-failure
