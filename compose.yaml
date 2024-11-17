@@ -3,14 +3,6 @@ networks:
     name: traefik
     external: true
 
-volumes:
-  nfs:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: addr=nas.i.kobu.au,rw
-      device: ":/volume1/ds/portainer"
-
 services:
   portainer:
     container_name: portainer
@@ -20,14 +12,13 @@ services:
     expose:
       - 9000
     volumes:
-      - type: volume
-        source: nfs
-        target: /app
-        volume:
-          nocopy: true
+      - ./data:/data
     deploy:
       restart_policy:
         condition: on-failure
+      placement:
+        constraints:
+          - node.role == manager
       labels:
         traefik.enable: "true"
         traefik.http.routers.portainer.tls: "true"
